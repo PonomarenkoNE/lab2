@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework_simplejwt',
-    'drf_spectacular'
+    'drf_spectacular',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'cuttly.urls'
@@ -75,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'cuttly.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
 
 # Database
@@ -169,10 +172,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
@@ -193,6 +192,17 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     "SERVE_INCLUDE_SCHEMA": False,
     # OTHER SETTINGS
+}
+
+DJANGO_CHANNELS_REST_API = {}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
 }
 
 PUBLIC_URLS = (  # dont check ApiKey

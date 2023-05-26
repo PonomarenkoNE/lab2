@@ -5,7 +5,7 @@ services:
     build: ./.
     restart: always
     working_dir: /cuttly
-    command: gunicorn cuttly.wsgi:application --bind 0.0.0.0:8000
+    command: daphne cuttly.asgi:application -b 0.0.0.0
     volumes:
       - static_volume:/cuttly/static
     environment:
@@ -20,6 +20,7 @@ services:
       - 8000:8000
     depends_on:
       - db
+      - redis
   db:
     image: postgres
     volumes:
@@ -28,6 +29,9 @@ services:
       - POSTGRES_DB=cuttly-dev
       - POSTGRES_USER=cuttlyuser
       - POSTGRES_PASSWORD=cuttlysecret
+  redis:
+    image: redis:alpine
+    restart: always
 
 volumes:
   postgres_data:

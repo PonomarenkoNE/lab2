@@ -9,6 +9,7 @@ from cuttly.settings import HOST
 
 class User(AbstractUser):
     username_validator = UnicodeUsernameValidator()
+    is_online = models.BooleanField(default=False)
 
     username = models.CharField(
         _('username'),
